@@ -1,35 +1,49 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <limits.h>
 
-int isPrime(int n)
-{
-    for (int i = n - 1; i > 1; i--)
-    {
-        if (n % i == 0)
-        {
-            return 0;
-        }
-    }
-    return 1;
+typedef struct ab{
+	int info;
+	struct ab *esq, *dir;
+}TAB;
+
+TAB* cria(int info, TAB* esq, TAB* dir){
+	TAB* a;
+	a = malloc(sizeof(TAB));
+	
+	a->esq = esq;
+	a->dir = dir;
+	a->info = info;
 }
 
-int main(int argc, char const *argv[])
-{
-    // TODO: Make more efficient
-    int n, count;
-    while (1)
-    {
-        count = 0;
-        printf("Digite n: ");
-        scanf("%d", &n);
+void libera(TAB *a) {
+	if (!a) return;
+	libera(a->esq);
+	libera(a->dir);
+	free(a);
+}
 
-        for (int i = n + 1; count < n; i++)
-            if (isPrime(i))
-            {
-                printf("%d ", i);
-                count++;
-            }
-        puts("\n");
-    }
+int menor(TAB* a){
+	if (!a) return INT_MAX;
+	int n = a->info;
+	int esq = menor(a->esq);
+	int dir = menor(a->dir);
+	
+	if (esq < n) n = esq;
+	if (dir < n) n = dir;
+	
+	return n;
+}
 
-    return 0;
+int main(void){
+	TAB *a, *b, *c;
+	b = cria(6, cria(2, cria(20, NULL , NULL), NULL), NULL);
+	c = cria(5, cria(9, NULL, NULL), NULL);
+	a = cria(15, b, c);
+	
+	printf("Menor é %d\n", menor(a));
+	
+	free(a);
+	
+	return 0;
 }
