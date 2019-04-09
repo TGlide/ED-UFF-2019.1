@@ -25,9 +25,12 @@ void libera(TAB *a) {
 
 void retira(TAB* a, int n){
 	if (!a) return;
-	if (a->info == n){
-		if (!a->esq && !a->dir) 
-	}
+	if (a->esq) {
+        if (a->esq->info == n){
+            TAB * esq = a->esq
+            if (esq->esq && esq->dir) {
+            
+        }
 }
 
 int main(void){
